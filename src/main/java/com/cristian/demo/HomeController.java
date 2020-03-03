@@ -1,14 +1,15 @@
 package com.cristian.demo;
 
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 
 @Controller
@@ -19,6 +20,8 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    CloudinaryConfig cloudc;
 
     @RequestMapping("/")
     public String index(){
@@ -27,6 +30,30 @@ public class HomeController {
     @RequestMapping("/login")
     public String login(){
         return "login";
+    }
+
+    @GetMapping("/add")
+    public String newUser(Model model) {
+        model.addAttribute("user", new User());
+        return "form";
+    }
+
+    @PostMapping("/add")
+    public String processFood(@ModelAttribute User user,
+                              @RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return "redirect:/add";
+        }
+        try {
+            Map uploadResult = cloudc.upload(file.getBytes(),
+                    ObjectUtils.asMap("resourcetype", "auto"));
+            user.setPhoto(uploadResult.get("url").toString());
+            userRepository.save(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "redirect:/add";
+        }
+        return "redirect:/";
     }
     @RequestMapping("/secure")
 

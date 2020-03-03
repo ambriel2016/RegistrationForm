@@ -32,6 +32,9 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "photo")
+    private String photo;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -40,13 +43,14 @@ public class User {
     public User(){
     }
 
-    public User(String email, String password, String firstName, String lastName, boolean enabled, String username){
+    public User(String email, String password, String firstName, String lastName, boolean enabled, String username, String photo){
         this.setEmail(email);
         this.setPassword(password);
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setEnabled(enabled);
         this.setUsername(username);
+        this.setPhoto(username);
     }
 
     public long getId() {
@@ -104,6 +108,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public Collection<Role> getRoles() {
