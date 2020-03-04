@@ -50,7 +50,7 @@ public class User {
         this.setLastName(lastName);
         this.setEnabled(enabled);
         this.setUsername(username);
-        this.setPhoto(username);
+        this.setPhoto(photo);
     }
 
     public long getId() {

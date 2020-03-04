@@ -36,7 +36,7 @@
             <div class="card-body">
                 <form autocomplete="off" action="#"
                       th:action="@{/register}"
-                      th:object="${user}" method="POST">
+                      th:object="${user}" enctype="multipart/form-data" method="POST">
                     <div class="form-row m-b-55">
                         <div class="name">Name</div>
                         <div class="value">
@@ -61,7 +61,6 @@
                                         <label class="label--desc">last name</label>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -100,27 +99,12 @@
                         </div>
                     </div>
 
-                    <div class="card-columns">
-                        <div th:each="user : ${users}">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div th:if="${user.photo} != null">
-                                        <img class="img-fluid" th:src="${user.photo}" /><hr />
-                                    </div>
-                                    <div class="card-body">
-                                        <h4 class="card-title" th:text="${user.username}"></h4>
-                                        <p class="card-text" th:text="${user.password}"></p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Uploaded by: </small><small class="text-muted"  th:text="${user.username}"></small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <input type="file" name="file" /><br/><br/><br/>
                     </div>
 
                     <div>
-                        <button class="btn btn--radius-2 btn--red" type="submit">Register</button>
+                        <button class="btn btn--radius-2 btn--red" type="submit">Register</button><br/>
                     </div>
                 </form>
             </div>

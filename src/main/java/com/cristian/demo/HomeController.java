@@ -38,24 +38,7 @@ public class HomeController {
         return "form";
     }
 
-    @PostMapping("/add")
-    public String processFood(@ModelAttribute User user,
-                              @RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return "redirect:/add";
-        }
-        try {
-            Map uploadResult = cloudc.upload(file.getBytes(),
-                    ObjectUtils.asMap("resourcetype", "auto"));
-            user.setPhoto(uploadResult.get("url").toString());
-            userRepository.save(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "redirect:/add";
-        }
-        return "redirect:/";
-    }
-    @RequestMapping("/secure")
+   @RequestMapping("/secure")
 
     public String secure(Principal principal, Model model){
         String username = principal.getName();
@@ -68,10 +51,21 @@ public class HomeController {
         return "register";
     }
     @PostMapping("/register")
-    public String processRegistrationPage(@ModelAttribute("user") User user, Model model){
-        model.addAttribute("user", user);
-        userService.saveUser(user);
-            //model.addAttribute("message", "User Account Created");
-        return "index";
-    }
-}
+    public String processRegistrationPage(@ModelAttribute("user") User user, Model model,
+           @RequestParam("file") MultipartFile file) {
+            if (file.isEmpty()) {
+                return "redirect:/register";
+            }
+            try {
+                Map uploadResult = cloudc.upload(file.getBytes(),
+                        ObjectUtils.asMap("resourcetype", "auto"));
+                user.setPhoto(uploadResult.get("url").toString());
+                userRepository.save(user);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "redirect:/register";
+            }
+            return "redirect:/";
+        }
+ }
+
